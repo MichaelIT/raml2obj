@@ -35,14 +35,14 @@ function _objectToArray(obj) {
 //
 // EXAMPLE OUTPUT:
 // { foo: { ... }, bar: { ... } }
-function _arrayToObject(arr) {
-  return arr.reduce((acc, cur) => {
-    Object.keys(cur).forEach(key => {
-      acc[key] = cur[key];
-    });
-    return acc;
-  }, {});
-}
+// function _arrayToObject(arr) {
+//   return arr.reduce((acc, cur) => {
+//     Object.keys(cur).forEach(key => {
+//       acc[key] = cur[key];
+//     });
+//     return acc;
+//   }, {});
+// }
 
 // PUBLIC
 
@@ -53,6 +53,7 @@ function recursiveObjectToArray(obj) {
       if (
         _isObject(obj) &&
         [
+          'methods',
           'responses',
           'body',
           'queryParameters',
@@ -78,23 +79,23 @@ function recursiveObjectToArray(obj) {
 }
 
 // Transform some TOP LEVEL properties from arrays to simple objects
-function arraysToObjects(ramlObj) {
-  [
-    'types',
-    'traits',
-    'resourceTypes',
-    'annotationTypes',
-    'securitySchemes',
-  ].forEach(key => {
-    if (ramlObj[key]) {
-      ramlObj[key] = _arrayToObject(ramlObj[key]);
-    }
-  });
-
-  return ramlObj;
-}
+// function arraysToObjects(ramlObj) {
+//   [
+//     'types',
+//     'traits',
+//     'resourceTypes',
+//     'annotationTypes',
+//     'securitySchemes',
+//   ].forEach(key => {
+//     if (ramlObj[key]) {
+//       ramlObj[key] = _arrayToObject(ramlObj[key]);
+//     }
+//   });
+//
+//   return ramlObj;
+// }
 
 module.exports = {
-  arraysToObjects,
+  // arraysToObjects,
   recursiveObjectToArray,
 };

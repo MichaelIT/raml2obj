@@ -11,13 +11,13 @@
   },
   "dependencies": {
     "datatype-expansion": "0.0.15",
-    "raml-1-parser": "1.1.21"
+    "raml-1-parser": "1.1.22"
   },
   "devDependencies": {
     "eslint": "3.19.x",
     "eslint-plugin-prettier": "2.0.x",
     "glob": "7.1.x",
-    "mocha": "3.3.x",
+    "mocha": "^3.4.2",
     "prettier": "1.x"
   },
   "homepage": "https://github.com/raml2html/raml2obj",

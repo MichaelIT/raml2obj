@@ -84,9 +84,10 @@ describe('raml2obj', () => {
         response.body[0].type,
         '{\n  "title": "Hello world Response",\n  "type": "object",\n  "properties": {\n    "message": {\n      "type": "string"\n    }\n  }\n}\n'
       );
+
       assert.strictEqual(
-        response.body[0].examples[0].value,
-        '{\n  "message": "Hello world"\n}'
+        response.body[0].examples[0].value.message,
+        'Hello world'
       );
     });
 

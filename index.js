@@ -100,7 +100,8 @@ function _enhanceRamlObj(ramlObj) {
   //
   // EXAMPLE of what we want:
   // { foo: { ... }, bar: { ... } }
-  ramlObj = helpers.arraysToObjects(ramlObj);
+  // NO NEED make 'types','traits','resourceTypes','annotationTypes','securitySchemes' to objec anymore
+  // ramlObj = helpers.arraysToObjects(ramlObj);
 
   // We want to expand inherited root types, so that later on when we copy type properties into an object,
   // we get the full graph.
@@ -140,29 +141,25 @@ function _enhanceRamlObj(ramlObj) {
   return ramlObj;
 }
 
-function _sourceToRamlObj(source, validation) {
+function _sourceToRamlObj(source) {
   if (typeof source === 'string') {
     if (fs.existsSync(source) || source.indexOf('http') === 0) {
       // Parse as file or url
-      return raml
-        .loadApi(source, { rejectOnErrors: !!validation })
-        .then(result => {
-          if (result._node._universe._typedVersion === '0.8') {
-            throw new Error('_sourceToRamlObj: only RAML 1.0 is supported!');
-          }
-
-          if (result.expand) {
-            return result.expand(true).toJSON({ serializeMetadata: false });
-          }
-
-          return new Promise((resolve, reject) => {
-            reject(
-              new Error(
-                '_sourceToRamlObj: source could not be parsed. Is it a root RAML file?'
-              )
-            );
-          });
+      return raml.load(source, { expandLibraries: true }).then(result => {
+        if (result.ramlVersion === 'RAML08') {
+          throw new Error('_sourceToRamlObj: only RAML 1.0 is supported!');
+        }
+        if (result && result.specification) {
+          return result.specification;
+        }
+        return new Promise((resolve, reject) => {
+          reject(
+            new Error(
+              '_sourceToRamlObj: source could not be parsed. Is it a root RAML file?'
+            )
+          );
         });
+      });
     }
 
     return new Promise((resolve, reject) => {
@@ -184,8 +181,6 @@ function _sourceToRamlObj(source, validation) {
   });
 }
 
-module.exports.parse = function(source, validation) {
-  return _sourceToRamlObj(source, validation).then(ramlObj =>
-    _enhanceRamlObj(ramlObj)
-  );
+module.exports.parse = function(source) {
+  return _sourceToRamlObj(source).then(ramlObj => _enhanceRamlObj(ramlObj));
 };

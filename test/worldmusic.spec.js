@@ -161,8 +161,9 @@ describe('raml2obj', () => {
       assert.strictEqual(get.responses.length, 1);
       assert.strictEqual(get.responses[0].code, '200');
       assert.strictEqual(get.responses[0].body.length, 1);
-      assert.strictEqual(get.responses[0].body[0].name, 'application/json');
-      assert.deepEqual(get.responses[0].body[0].schema, ['Entry']);
+      assert.strictEqual(get.responses[0].body[0].key, 'application/json');
+      assert.strictEqual(get.responses[0].body[0].name, 'Entry');
+      // assert.deepEqual(get.responses[0].body[0].schema, ['Entry']); // no schema
     });
 
     it('should test the /songs resource', () => {

@@ -32,18 +32,19 @@ describe('raml2obj', () => {
 
       assert.strictEqual(example.displayName, 'First Example!');
       assert.strictEqual(example.description, "It's the first example");
-      assert.strictEqual(JSON.parse(example.value).SomeField, 'Uno');
+
+      assert.strictEqual(example.value.SomeField, 'Uno');
 
       example = parent.examples[1];
 
       assert.strictEqual(example.displayName, 'Second Example!');
       assert.strictEqual(example.description, "It's the second example");
-      assert.strictEqual(JSON.parse(example.value).SomeField, 'Duo');
+      assert.strictEqual(example.value.SomeField, 'Duo');
 
       assert.strictEqual(obj.resources[1].relativeUri, '/JsonExample');
       parent = obj.resources[1].methods[0].responses[0].body[0];
       example = parent.examples[0];
-      value = JSON.parse(example.value);
+      value = example.value;
       assert.strictEqual(value.TestField, 'This example is defined in JSON.');
 
       assert.strictEqual(obj.resources[2].relativeUri, '/HeaderExample');
@@ -80,12 +81,12 @@ describe('raml2obj', () => {
       example = parent.queryParameters[0].examples[0];
       assert.strictEqual(example.displayName, 'Comfortable');
       assert.strictEqual(example.description, 'Best combined with a sunny day');
-      assert.strictEqual(example.value, '24');
+      assert.strictEqual(example.value, 24);
 
       assert.strictEqual(obj.resources[5].relativeUri, '/NestedExample');
       parent = obj.resources[5].methods[0].responses[0].body[0];
       example = parent.properties[0].examples[0];
-      value = JSON.parse(example.value);
+      value = example.value;
       assert.strictEqual(example.displayName, 'Sneaky nested example');
       assert.strictEqual(example.description, "It's sneaky!");
       assert.strictEqual(value.HereIsANumber, 42);
